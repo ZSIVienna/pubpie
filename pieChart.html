@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<link href="src/nv.d3.css" rel="stylesheet">
+<link href="src/l.css" rel="stylesheet">
+<style>
+text {
+    font: 12px sans-serif;
+}
+svg {
+    display: block;
+    height: 600px !important;
+    width: 750px !important;
+}
+html, body {
+    margin: 0px;
+    padding: 20px 0px 0px 0px;
+    height: 100%;
+    width: 100%;
+}
+</style>
+<body class='with-3d-shadow with-transitions'>
+
+<div class="container">
+    <div class="block-message" style="margin:0px">
+        <div class="block-message span12 offset1">
+
+            <h1>Publikationen nach Wissenschaftsbereich</h1>
+            <select id = "opts">
+                <option value="geisteswissenschaften">Geisteswissenschaften</option>
+                <option value="informatik">Informatik</option>
+                <option value="lehr_lernforschung">Lehr- und Lernforschung</option>
+                <option value="medizin_gesundheit">Medizin und Gesundheit</option>
+                <option value="naturwissenschaften">Naturwissenschaften</option>
+                <option value="sozialwissenschaften">Sozialwissenschaften</option>
+                <option value="technik">Technik</option>
+                <option value="gesamt" selected="selected">Gesamt</option>
+            </select>
+
+            <script src="lib/d3.v3.js"></script>
+            <script src="nv.d3.min.js"></script>
+            <script src="src/models/legend.js"></script>
+            <script src="src/models/pie.js"></script>
+            <script src="src/models/pieChart.js"></script>
+            <script src="src/utils.js"></script>
+
+            <h3>Variante 1</h3>
+            <svg id="test1" class="mypiechart"></svg>
+
+            <h3>Variante 2</h3>
+            <svg id="test2" class="mypiechart"></svg>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+  var geisteswissenschaften = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 3
+    },
+    {
+      key: "Buchkapitel",
+      y: 22
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 2
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 17
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 3
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 47
+    },
+    {
+      key: "Poster",
+      y: .3
+    },
+    {
+      key: "sonstiges",
+      y: .2
+    }
+  ];
+
+var informatik = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 0
+    },
+    {
+      key: "Buchkapitel",
+      y: 3
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 0
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 11
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 37
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 15
+    },
+    {
+      key: "Poster",
+      y: 1
+    },
+    {
+      key: "sonstiges",
+      y: 0
+    }
+  ];
+
+var lehr_lernforschung = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 3
+    },
+    {
+      key: "Buchkapitel",
+      y: 13
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 0
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 20
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 18
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 43
+    },
+    {
+      key: "Poster",
+      y: 30
+    },
+    {
+      key: "sonstiges",
+      y: 0
+    }
+  ];
+
+var medizin_gesundheit = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 0
+    },
+    {
+      key: "Buchkapitel",
+      y: 0
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 0
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 13
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 6
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 8
+    },
+    {
+      key: "Poster",
+      y: 5
+    },
+    {
+      key: "sonstiges",
+      y: 0
+    }
+  ];
+
+var naturwissenschaften = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 1
+    },
+    {
+      key: "Buchkapitel",
+      y: 11
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 0
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 74
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 11
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 64
+    },
+    {
+      key: "Poster",
+      y: 46
+    },
+    {
+      key: "sonstiges",
+      y: 12
+    }
+  ];
+
+
+var sozialwissenschaften = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 6
+    },
+    {
+      key: "Buchkapitel",
+      y: 40
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 9
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 51
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 19
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 78
+    },
+    {
+      key: "Poster",
+      y: 8
+    },
+    {
+      key: "sonstiges",
+      y: 5
+    }
+  ];
+
+
+var technik = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 1
+    },
+    {
+      key: "Buchkapitel",
+      y: 2
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 8
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 12
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 32
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 25
+    },
+    {
+      key: "Poster",
+      y: 3
+    },
+    {
+      key: "sonstiges",
+      y: 0
+    }
+  ];
+
+
+var gesamt = [
+    {
+      key: "Monographien/Sammelbände",
+      y: 14
+    },
+    {
+      key: "Buchkapitel",
+      y: 91
+    },
+    {
+      key: "Berichte/Working Paper",
+      y: 19
+    },
+    {
+      key: "Zeitschriftenartikel",
+      y: 198
+    },
+    {
+      key: "Beiträge in Tagungsbänden",
+      y: 126
+    },
+    {
+      key: "Vorträge/Podiumsdiskussionen/Workshops/Tagungen",
+      y: 280
+    },
+    {
+      key: "Poster",
+      y: 96
+    },
+    {
+      key: "sonstiges",
+      y: 19
+    }
+  ];
+    
+// handle on click event
+d3.select('#opts').on('change', function() {
+    var newData = eval(d3.select(this).property('value'));
+    updateLegend(newData);
+});
+    
+// function that wraps around the d3 pattern (bind, add, update, remove)
+function updateLegend(newData) {
+    
+    nv.addGraph(function() {
+
+        var height = 700;
+        var width = 500;
+
+        var chart = nv.models.pieChart()
+                .x(function(d) { return d.key })
+                .y(function(d) { return d.y })
+                .color(d3.scale.category10().range())
+                .width(width)
+                .height(height);
+
+        d3.select("#test1")
+                .datum(newData)
+                .transition().duration(1200)
+                .attr('width', width)
+                .attr('height', height)
+                .call(chart);
+
+        return chart;
+    });
+
+    nv.addGraph(function() {
+
+        var width = 700;
+        var height = 500;
+
+        var chart = nv.models.pieChart()
+                .x(function(d) { return d.key })
+                .color(d3.scale.category10().range())
+                .width(width)
+                .height(height)
+                .donut(true);
+
+        d3.select("#test2")
+                .datum(newData)
+                .transition().duration(1200)
+                .attr('width', width)
+                .attr('height', height)
+                .call(chart);
+
+        return chart;
+    });
+}
+updateLegend(gesamt);
+</script>
+</body>
+</html>
